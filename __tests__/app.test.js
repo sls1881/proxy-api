@@ -1,9 +1,110 @@
 require('dotenv').config();
 
-const { formatReviews } = require('../lib/mungingFunctions.js');
+const { formatReviews, formatLocation, formatWeather } = require('../lib/mungingFunctions.js');
 
 describe('app routes', () => {
   describe('routes', () => {
+
+    //Test location function
+    test('It should return a review from yelp', () => {
+
+      const expectation = {
+        'formatted_query': 'Portland, Multnomah County, Oregon, USA',
+        'latitude': '45.5202471',
+        'longitude': '-122.6741949',
+      };
+
+
+      const actual = [
+        {
+          'place_id': '282983083',
+          'licence': 'https://locationiq.com/attribution',
+          'osm_type': 'relation',
+          'osm_id': '186579',
+          'boundingbox': [
+            '45.432536',
+            '45.6528812',
+            '-122.8367489',
+            '-122.4720252'
+          ],
+          'lat': '45.5202471',
+          'lon': '-122.6741949',
+          'display_name': 'Portland, Multnomah County, Oregon, USA',
+          'class': 'place',
+          'type': 'city',
+          'importance': 0.75356571743377,
+          'icon': 'https://locationiq.org/static/images/mapicons/poi_place_city.p.20.png'
+        },
+      ];
+
+      const data = formatLocation(actual);
+
+      expect(data).toEqual(expectation);
+    });
+
+    //Test weather function
+    test('It should return weather', () => {
+
+      const expectation = [
+        {
+          forecast: 'Light snow',
+          time: '2/27/2021',
+        }
+      ];
+
+      const actual = {
+        data: [
+          {
+            'moonrise_ts': 1614474896,
+            'wind_cdir': 'W',
+            'rh': 97,
+            'pres': 899.833,
+            'high_temp': -0.2,
+            'sunset_ts': 1614477217,
+            'ozone': 368.833,
+            'moon_phase': 0.974704,
+            'wind_gust_spd': 13.7969,
+            'snow_depth': 78.1,
+            'clouds': 78,
+            'ts': 1614412860,
+            'sunrise_ts': 1614437297,
+            'app_min_temp': -8.3,
+            'wind_spd': 4.3086,
+            'pop': 90,
+            'wind_cdir_full': 'west',
+            'slp': 1025.08,
+            'moon_phase_lunation': 0.55,
+            'valid_date': '2021-02-27',
+            'app_max_temp': -5.1,
+            'vis': 7.8405,
+            'dewpt': -2,
+            'snow': 25.5,
+            'uv': 2.30289,
+            'weather': {
+              'icon': 's01d',
+              'code': 600,
+              'description': 'Light snow'
+            },
+            'wind_dir': 281,
+            'max_dhi': null,
+            'clouds_hi': 7,
+            'precip': 2.25,
+            'low_temp': -2.3,
+            'max_temp': -0.1,
+            'moonset_ts': 1614441257,
+            'datetime': '2021-02-27',
+            'temp': -1.4,
+            'min_temp': -2.7,
+            'clouds_mid': 14,
+            'clouds_low': 77
+          }
+        ]
+      };
+
+      const data = formatWeather(actual);
+
+      expect(data).toEqual(expectation);
+    });
 
     //Get review function
     test('It should return a review from yelp', () => {
@@ -76,7 +177,6 @@ describe('app routes', () => {
 
       expect(data).toEqual(expectation);
     });
-
 
 
   });
