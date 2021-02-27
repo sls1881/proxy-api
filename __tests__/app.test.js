@@ -6,7 +6,7 @@ describe('app routes', () => {
   describe('routes', () => {
 
     //Test location function
-    test('It should return a review from yelp', () => {
+    test('It should return a location', () => {
 
       const expectation = {
         'formatted_query': 'Portland, Multnomah County, Oregon, USA',
@@ -106,7 +106,7 @@ describe('app routes', () => {
       expect(data).toEqual(expectation);
     });
 
-    //Get review function
+    //Test review function
     test('It should return a review from yelp', () => {
 
       const expectation = [
